@@ -12,6 +12,23 @@ export const UserProfile = (props) => {
   const onFocus = () =>{
     setIsFocus(!isFocus)
   }
+
+  const dogstagramURL = 'http://b098ba2f1199.ngrok.io/feed';
+
+  const _onPressButton = () => {
+    fetch(dogstagramURL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: data.name,
+        image: data.image,
+        description: text
+      })
+    });
+  }
   
   return(
     <>
@@ -34,7 +51,7 @@ export const UserProfile = (props) => {
       />
     </View>
     <View style={styles.button}>
-      { isFocus ? <Button title="Post" onPress={() => Alert.alert('Simple Button pressed')} />  
+      { isFocus ? <Button title="Post" onPress={_onPressButton} />  
                 : null }
     </View>
     </>

@@ -11,11 +11,12 @@ export const Feed = (props) => {
 
   const [likeCounter, setLikeCounter] = useState(props.data.likeCounter);
   
-  const dogstagramURL = 'http://0.0.0.0:5000/feed/like/';
+  const dogstagramURL = 'http://b098ba2f1199.ngrok.io/feed';
 
   const _onPressButton = () => {
+    console.log(String(data['_id']['$oid']))
     if (like){
-      fetch(dogstagramURL + 'decrease/60732e24e54e103ff848b675', {
+      fetch(dogstagramURL + '/like/decrease/' + String(data['_id']['$oid']), {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -24,7 +25,7 @@ export const Feed = (props) => {
       });
       setLikeCounter(likeCounter-1);
     } else{
-      fetch(dogstagramURL + 'increase/60732e24e54e103ff848b675', {
+      fetch(dogstagramURL + '/like/increase/' + String(data['_id']['$oid']), {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -47,6 +48,12 @@ export const Feed = (props) => {
         <Text style={styles.text}>{data.name}</Text>
       </View>
       <Text style={styles.descriptionText}>{data.description}</Text>
+      <View style={styles.imageFeedContainer}>
+        <Image 
+          source={{ uri: data.image }}
+          style={styles.imageFeed}
+        />
+      </View>
       <View style={styles.imageReactionContainer}>
       <TouchableHighlight onPress={ _onPressButton } underlayColor="white">
         <View style={styles.iconContainer}>
@@ -98,6 +105,14 @@ const styles = StyleSheet.create({
       marginLeft: 16,
       width: 30, 
       height:30
-  }
+  },
+  imageFeedContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageFeed:{
+    width: 200, 
+    height:200
+},
 });
   

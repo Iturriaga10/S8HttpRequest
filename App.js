@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, FlatList, ActivityIndicator } from 'react-native';
 import {Header} from './Header';
 import {Feed} from './Feed';
 import {UserProfile} from './UserProfile';
@@ -10,26 +10,33 @@ export default function App() {
     "image": "https://cnnespanol.cnn.com/wp-content/uploads/2020/07/200703104728-labrador-retriever-stock-super-169.jpg?quality=100&strip=info&w=940&h=530&crop=1",
   }
   
-  const dogstagramURL = 'http://0.0.0.0:5000/feed';
-  
+  const dogstagramURL = 'http://b098ba2f1199.ngrok.io/feed';
+ 
+  const [isLoading, setLoading] = useState(true);
+
   const [dataFeed, setDataFeed] = useState([]); 
   
-  fetch(dogstagramURL)
-  .then( (response) => response.json())
-  .then((json) => setDataFeed(json) )
-  .catch((error) => alert(error)); 
+  useEffect(() => {
+    fetch(dogstagramURL)
+    .then( (response) => response.json())
+    .then((json) => setDataFeed(json) )
+    .catch((error) => alert(error)) 
+    .finally(() => setLoading(false));
+  }, []);
 
   return (
     <>
     <Header />
     <UserProfile data = {dataUser}/>
-    <FlatList 
-      keyExtractor={ (item) => String(item['_id']['$oid']) }
-      data = {dataFeed}
-      renderItem = { ({item}) =>(
-        <Feed data={item}/>
-      )}
+    { isLoading ? <ActivityIndicator/> : (
+      <FlatList 
+        keyExtractor={ (item) => String(item['_id']['$oid']) }
+        data = {dataFeed}
+        renderItem = { ({item}) =>(
+          <Feed data={item}/>
+        )}
     />
+    )}
     </>
   );
 }
