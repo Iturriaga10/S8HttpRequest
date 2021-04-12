@@ -1,2 +1,2 @@
-# S6IconsConceptsTouchable
-Session 6, Icons, Essential Concepts and Touchable.
+# S8HttpRequest
+Session 8, HTTP Request.
